@@ -17,6 +17,7 @@ document.getElementById("btn-save-url").addEventListener("click", () => {
     localStorage.setItem(SCRIPT_URL_KEY, url);
     loadData().then((data) => {
       console.log("Данные загружены:", data);
+      renderWords(data);
     });
   }
 });
@@ -25,8 +26,20 @@ document.getElementById("btn-save-url").addEventListener("click", () => {
 loadData().then((data) => {
   if (data) {
     console.log("Данные:", data);
+    renderWords(data);
   } else {
     // показать настройки
     document.getElementById("block-settings").style.display = "block";
   }
 });
+
+function renderWords(data) {
+  const block = document.getElementById("block-words");
+  block.innerHTML = "";
+
+  data.forEach((row) => {
+    const div = document.createElement("div");
+    div.textContent = `${row[0]} | ${row[2]} | ${row[4]} | ${row[6]} | ${row[8]} | ${row[10]}`;
+    block.appendChild(div);
+  });
+}
