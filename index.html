@@ -25,10 +25,11 @@
         <button id="btn-add">Добавить</button>
       </div>
       <!-- ПОРЯДОК -->
-      <div id="block-order">block-order</div>
+      <div id="block-order">block-order настройки для показа карточек</div>
 
       <!-- УЧИТЬ -->
       <div id="block-learn">
+        <p>карточка</p>
         <div id="card">
           <div id="card-ru">РУ</div>
           <div id="card-en">АНГ</div>
@@ -40,9 +41,51 @@
       </div>
 
       <!-- СЛОВА -->
-      <div id="block-words">block-words</div>
+      <div id="block-words">block-words блок со всеми имеющимися словами</div>
+
+      <!-- ДОБАВИТЬ -->
+      <div id="block-add">
+        <label>Группа</label>
+        <select id="add-group">
+          <option value="80%">80%</option>
+          <option value="глаг">Глаголы</option>
+          <option value="сущ">Существительные</option>
+          <option value="прилаг">Прилагательные</option>
+          <option value="наречия">Наречия</option>
+        </select>
+
+        <label>Родное слово</label>
+        <input
+          id="add-native"
+          type="text"
+          placeholder="Слово на родном языке"
+        />
+
+        <label id="label-lang1">Язык 1</label>
+        <input id="add-lang1" type="text" />
+
+        <label id="label-lang2">Язык 2</label>
+        <input id="add-lang2" type="text" />
+
+        <label>Комментарий</label>
+        <input id="add-comment" type="text" placeholder="Комментарий" />
+
+        <label>ЦБК код</label>
+        <input id="add-code" type="text" placeholder="Код" />
+
+        <label>Номер</label>
+        <input
+          id="add-number"
+          type="text"
+          placeholder="Подставится автоматически"
+        />
+
+        <button id="btn-add-word">Добавить</button>
+      </div>
+
       <!-- НАСТРОЙКИ -->
       <div id="block-settings">
+        <p>настройки - ссылка языки итд</p>
         <!-- Ссылка -->
         <div id="settings-url">
           <input
