@@ -56,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document
     .getElementById("btn-add-word")
     .addEventListener("click", async () => {
+      console.log("кнопка нажата");
       const url = localStorage.getItem(SCRIPT_URL_KEY);
       if (!url) return alert("Нет ссылки на таблицу");
 
