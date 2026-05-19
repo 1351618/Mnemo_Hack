@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
       renderWords(result.data);
       applySettings(result.settings);
     } else {
-      document.getElementById("block-settings").style.display = "block";
+      // document.getElementById("block-settings").style.display = "block";
     }
   });
 

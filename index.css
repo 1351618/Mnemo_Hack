@@ -1,5 +1,12 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
 div[id^="block-"] {
   border: 2px solid red;
-  margin: 10px;
+  height: 100vh;
+  box-sizing: border-box;
   padding: 10px;
 }
