@@ -1,35 +1,32 @@
 document.addEventListener("DOMContentLoaded", () => {
   const SCRIPT_URL_KEY = "scriptUrl";
 
-  // Загрузка данных из таблицы
   async function loadData() {
     const url = localStorage.getItem(SCRIPT_URL_KEY);
     if (!url) return null;
-
     const response = await fetch(url);
-    const data = await response.json();
-    return data;
+    const result = await response.json();
+    return result;
   }
 
-  // Сохранение ссылки
   document.getElementById("btn-save-url").addEventListener("click", () => {
     const url = document.getElementById("input-url").value.trim();
     if (url) {
       localStorage.setItem(SCRIPT_URL_KEY, url);
-      loadData().then((data) => {
-        console.log("Данные загружены:", data);
-        renderWords(data);
+      loadData().then((result) => {
+        console.log("Данные загружены:", result);
+        renderWords(result.data);
+        applySettings(result.settings);
       });
     }
   });
 
-  // При открытии приложения
-  loadData().then((data) => {
-    if (data) {
-      console.log("Данные:", data);
-      renderWords(data);
+  loadData().then((result) => {
+    if (result) {
+      console.log("Данные:", result);
+      renderWords(result.data);
+      applySettings(result.settings);
     } else {
-      // показать настройки
       document.getElementById("block-settings").style.display = "block";
     }
   });
@@ -37,13 +34,38 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderWords(data) {
     const block = document.getElementById("block-words");
     block.innerHTML = "";
-
     data.forEach((row) => {
       const div = document.createElement("div");
       div.textContent = `${row[0]} | ${row[2]} | ${row[4]} | ${row[6]} | ${row[8]} | ${row[10]}`;
       block.appendChild(div);
     });
   }
+
+  function applySettings(settings) {
+    settings.forEach((row) => {
+      if (row[0] === "lang-native")
+        document.getElementById("lang-native").value = row[1];
+      if (row[0] === "lang-1") document.getElementById("lang-1").value = row[1];
+      if (row[0] === "lang-2") document.getElementById("lang-2").value = row[1];
+    });
+  }
+
+  document
+    .getElementById("btn-save-langs")
+    .addEventListener("click", async () => {
+      const url = localStorage.getItem(SCRIPT_URL_KEY);
+      if (!url) return alert("Нет ссылки на таблицу");
+      await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+          action: "save-settings",
+          "lang-native": document.getElementById("lang-native").value,
+          "lang-1": document.getElementById("lang-1").value,
+          "lang-2": document.getElementById("lang-2").value,
+        }),
+      });
+      alert("Сохранено!");
+    });
 
   const GROUPS = {
     "80%": [0, 999],
@@ -63,9 +85,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const group = document.getElementById("add-group").value;
       const [min, max] = GROUPS[group];
 
-      // найти свободный номер в диапазоне
-      const data = await loadData();
-      const usedNumbers = data.map((row) => row[4]); // колонка с номером
+      const result = await loadData();
+      const usedNumbers = result.data.map((row) => row[4]);
 
       let number = null;
       for (let i = min; i <= max; i++) {
@@ -82,19 +103,19 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("add-number").value = number;
 
       const row = [
-        "", // интервал
-        "", // дата
-        document.getElementById("add-comment").value, // комент
-        true, // TRUE
-        document.getElementById("add-code").value, // код
+        "",
+        "",
+        document.getElementById("add-comment").value,
         true,
-        number, // номер
+        document.getElementById("add-code").value,
         true,
-        document.getElementById("add-native").value, // родной
+        number,
         true,
-        document.getElementById("add-lang1").value, // язык 1
+        document.getElementById("add-native").value,
         true,
-        document.getElementById("add-lang2").value, // язык 2
+        document.getElementById("add-lang1").value,
+        true,
+        document.getElementById("add-lang2").value,
       ];
 
       await fetch(url, {
