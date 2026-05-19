@@ -3,10 +3,38 @@ body {
   margin: 0;
   height: 100%;
 }
+main {
+  border: 2px solid #36e835;
+}
 
 div[id^="block-"] {
   border: 2px solid red;
   height: 100vh;
   box-sizing: border-box;
   padding: 10px;
+}
+
+#block-menu {
+  border: 2px solid #3565e8;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+#menu-stats,
+#menu-buttons {
+  flex: 1;
+  border: 2px solid red;
+}
+
+@media (orientation: landscape) {
+  #block-menu {
+    flex-direction: row;
+  }
+
+  #menu-stats,
+  #menu-buttons {
+    flex: 1;
+    height: auto;
+  }
 }
