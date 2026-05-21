@@ -125,4 +125,60 @@ document.addEventListener("DOMContentLoaded", () => {
 
       alert("Добавлено!");
     });
+
+  // -----------------------
+  const totalWords = 1500;
+
+  const data = [
+    { label: "80%", word: 10, eng: 40, gre: 10 },
+    { label: "Сущ.", word: 20, eng: 50, gre: 20 },
+    { label: "Глаг.", word: 30, eng: 60, gre: 30 },
+    { label: "Нар.", word: 40, eng: 70, gre: 56 },
+    { label: "Прил.", word: 50, eng: 80, gre: 82 },
+  ];
+
+  const layers = [
+    { key: "word", color: "#e47575" }, // светлый
+    { key: "eng", color: "#9D4EDD" }, // средний
+    { key: "gre", color: "#22c88f" }, // тёмный
+  ];
+
+  const TRACK_H = 18;
+  const LAYER_H = 6;
+
+  document.getElementById("total").textContent = totalWords;
+
+  const chart = document.getElementById("chart");
+
+  data.forEach((row) => {
+    const bar = document.createElement("div");
+    bar.className = "row";
+
+    const label = document.createElement("span");
+    label.className = "row-label";
+    label.textContent = row.label;
+
+    const track = document.createElement("div");
+    track.className = "track";
+
+    layers.forEach((layer, i) => {
+      const fill = document.createElement("div");
+      fill.className = "fill";
+      fill.style.top = i * LAYER_H + "px";
+      fill.style.width = row[layer.key] + "%";
+      fill.style.background = layer.color;
+      track.appendChild(fill);
+    });
+
+    const nums = document.createElement("span");
+    nums.className = "row-nums";
+    nums.textContent = `${row.word}·${row.eng}·${row.gre}`;
+
+    bar.appendChild(label);
+    bar.appendChild(track);
+    // bar.appendChild(nums);
+    chart.appendChild(bar);
+  });
+
+  // -----------------------
 });
