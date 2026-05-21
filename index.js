@@ -181,4 +181,39 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // -----------------------
+  // отображение блоков
+  const menuBtn = document.getElementById("btn-menu");
+
+  function hideAll() {
+    document
+      .querySelectorAll("div[id^='block-']")
+      .forEach((b) => (b.style.display = "none"));
+  }
+
+  function showMenu() {
+    hideAll();
+    document.getElementById("block-menu").style.display = "flex";
+    menuBtn.style.display = "none";
+  }
+
+  function showScreen(id) {
+    hideAll();
+    document.getElementById(id).style.display = "block";
+    menuBtn.style.display = "block";
+  }
+
+  // кнопки
+  document.getElementById("btn-start").onclick = () =>
+    showScreen("block-learn");
+  document.getElementById("btn-words").onclick = () =>
+    showScreen("block-words");
+  document.getElementById("btn-order").onclick = () =>
+    showScreen("block-order");
+  document.getElementById("btn-settings").onclick = () =>
+    showScreen("block-settings");
+  document.getElementById("btn-add").onclick = () => showScreen("block-add");
+
+  // кнопка назад в меню
+  menuBtn.onclick = showMenu;
+  // -----------------------
 });

@@ -3,14 +3,18 @@ body {
   margin: 0;
   overscroll-behavior: none;
   overflow: hidden; /* если контент не должен скроллиться */
-  position: fixed;
-  width: 100%;
-  height: 100%;
+  /* position: fixed; */
+  /* width: 100%;
+  height: 100%; */
   background-color: #191921;
   color: #e0d1fa;
 }
 main {
   /* border: 2px solid #36e835; */
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  inset: 0;
 }
 
 div[id^="block-"] {
@@ -149,4 +153,39 @@ div[id^="block-"] {
 .menu-stats-total strong {
   /* color: #111; */
   font-weight: 500;
+}
+
+/* ---------------- */
+
+#btn-menu {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+
+  width: 60px;
+  height: 60px;
+
+  font-size: 26px;
+  color: #e0d1fa;
+
+  border: none;
+  border-radius: 15px;
+
+  background: linear-gradient(to bottom, #020aff, #001848);
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.8);
+
+  cursor: pointer;
+
+  transition: transform 0.1s, box-shadow 0.2s, filter 0.2s;
+}
+
+#btn-menu:active {
+  transform: scale(0.96);
+
+  box-shadow: 0 0 20px rgba(1, 1, 126, 0.9), 0 0 40px rgba(0, 150, 255, 0.7);
+
+  filter: brightness(1.2);
 }
