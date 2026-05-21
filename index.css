@@ -10,27 +10,62 @@ body {
   color: #e0d1fa;
 }
 main {
-  border: 2px solid #36e835;
+  /* border: 2px solid #36e835; */
 }
 
 div[id^="block-"] {
-  border: 2px solid red;
+  /* border: 2px solid red; */
   height: 100vh;
   box-sizing: border-box;
   padding: 10px;
 }
 
 #block-menu {
-  border: 2px solid #3565e8;
+  /* border: 2px solid #3565e8; */
   display: flex;
   flex-direction: column;
   height: 100vh;
 }
 
-#menu-stats,
+#menu-stats {
+  flex: 1;
+  /* border: 2px solid red; */
+}
 #menu-buttons {
   flex: 1;
-  border: 2px solid red;
+  /* border: 2px solid red; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#menu-buttons button {
+  width: 90%;
+  padding: 15px;
+  margin: 10px 0;
+  font-size: 20px;
+  color: #e0d1fa;
+
+  border: none;
+  border-radius: 15px;
+
+  background: linear-gradient(to bottom, #020aff, #001848);
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.8);
+
+  cursor: pointer;
+
+  transition: transform 0.1s, box-shadow 0.2s, filter 0.2s;
+}
+
+#menu-buttons button:active {
+  transform: scale(0.96);
+
+  box-shadow: 0 0 20px rgba(1, 1, 126, 0.9), 0 0 40px rgba(0, 150, 255, 0.7);
+
+  filter: brightness(1.2);
 }
 
 @media (orientation: landscape) {
@@ -67,7 +102,7 @@ div[id^="block-"] {
 .chart {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 30px;
   padding: 45px 30px 0px 20px;
 }
 .row {
@@ -84,7 +119,7 @@ div[id^="block-"] {
 }
 .track {
   flex: 1;
-  height: 18px;
+  height: 30px;
   background: #272727;
   border-radius: 4px;
   position: relative;
@@ -93,7 +128,7 @@ div[id^="block-"] {
 .fill {
   position: absolute;
   left: 0;
-  height: 6px;
+  height: 10px;
   border-radius: 2px;
 }
 .row-nums {
@@ -103,15 +138,15 @@ div[id^="block-"] {
   text-align: right;
   flex-shrink: 0;
 }
-.footer {
-  border-top: 0.5px solid #e0e0e0;
+.menu-stats-total {
+  /* border-top: 0.5px solid #e0e0e0; */
   margin-top: 16px;
   padding-top: 10px;
   text-align: center;
   font-size: 13px;
-  color: #888;
+  /* color: #888; */
 }
-.footer strong {
-  color: #111;
+.menu-stats-total strong {
+  /* color: #111; */
   font-weight: 500;
 }

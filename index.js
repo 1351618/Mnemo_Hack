@@ -143,8 +143,8 @@ document.addEventListener("DOMContentLoaded", () => {
     { key: "gre", color: "#22c88f" }, // тёмный
   ];
 
-  const TRACK_H = 18;
-  const LAYER_H = 6;
+  // const TRACK_H = 18;
+  const LAYER_H = 10;
 
   document.getElementById("total").textContent = totalWords;
 
