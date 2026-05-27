@@ -13,6 +13,38 @@ h3 {
   padding: 0px;
   margin: 0px;
 }
+input {
+  background: #0f0f1a;
+  border: 1px solid #30304d;
+  color: #fff;
+  padding: 6px;
+  border-radius: 8px;
+  width: 80px;
+}
+button {
+  color: #e0d1fa;
+  border: none;
+  border-radius: 4px;
+  background: linear-gradient(to bottom, #020aff, #001848);
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition:
+    transform 0.1s,
+    box-shadow 0.2s,
+    filter 0.2s;
+  font-size: 16px;
+}
+
+button:active {
+  transform: scale(0.96);
+  box-shadow:
+    0 0 20px rgba(1, 1, 126, 0.9),
+    0 0 40px rgba(0, 150, 255, 0.7);
+  filter: brightness(1.2);
+}
+
 main {
   /* border: 2px solid #36e835; */
   position: fixed;
@@ -53,35 +85,7 @@ div[id^="block-"] {
   max-height: 60px;
   flex-grow: 1;
   width: 90%;
-  /* padding: 15px; */
   margin: 10px 0;
-  font-size: 20px;
-  color: #e0d1fa;
-  border: none;
-  border-radius: 15px;
-
-  background: linear-gradient(to bottom, #020aff, #001848);
-
-  box-shadow:
-    0 4px 10px rgba(0, 0, 0, 0.3),
-    inset 0 2px 4px rgba(255, 255, 255, 0.8);
-
-  cursor: pointer;
-
-  transition:
-    transform 0.1s,
-    box-shadow 0.2s,
-    filter 0.2s;
-}
-
-#menu-buttons button:active {
-  transform: scale(0.96);
-
-  box-shadow:
-    0 0 20px rgba(1, 1, 126, 0.9),
-    0 0 40px rgba(0, 150, 255, 0.7);
-
-  filter: brightness(1.2);
 }
 
 @media (orientation: landscape) {
@@ -96,6 +100,19 @@ div[id^="block-"] {
   }
 }
 /* --------- */
+
+.search-add {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.search-add input {
+  width: 90%;
+}
+.search-add button {
+  width: 35px;
+}
+
 #words-list > div {
   display: grid;
   grid-template-columns: 80px 1fr 1fr 1fr; /* 80px под номер, остальное поровну */
@@ -106,7 +123,7 @@ div[id^="block-"] {
 }
 
 .scroll-container {
-  height: calc(100vh - 150px); /* Высота экрана минус отступы и поиск */
+  height: calc(100vh - 125px);
   overflow-y: auto; /* Включает прокрутку */
   -webkit-overflow-scrolling: touch; /* Плавность для iOS */
   padding: 10px;
@@ -171,9 +188,8 @@ div[id^="block-"] {
   flex-shrink: 0;
 }
 .menu-stats-total {
-  /* border-top: 0.5px solid #e0e0e0; */
-  margin-top: 16px;
-  padding-top: 10px;
+  margin-top: 6px;
+  padding-top: 6px;
   text-align: center;
   font-size: 13px;
   /* color: #888; */
@@ -202,16 +218,6 @@ div[id^="block-"] {
   letter-spacing: 1px;
 }
 
-#parameters input[type="number"],
-#parameters select {
-  background: #0f0f1a;
-  border: 1px solid #30304d;
-  color: #fff;
-  padding: 8px;
-  border-radius: 8px;
-  width: 80px;
-}
-
 #parameters label {
   display: block;
   margin: 8px 0;
@@ -223,35 +229,36 @@ div[id^="block-"] {
   margin-right: 10px;
 }
 
+/* Для горизонтальной ориентации */
+@media (max-height: 415px) {
+  .chart {
+    padding: 1% 30px 0px 20px;
+  }
+
+  #parameters {
+    margin: 2px auto;
+    padding: 4px;
+  }
+
+  #parameters h3 {
+    margin: 2px 0;
+    font-size: 0.9rem;
+  }
+
+  #parameters label {
+    font-size: 0.85rem;
+    margin: 2px 0;
+  }
+}
+
 /* ---------------- */
 
 #btn-menu {
   position: fixed;
-  bottom: 20px;
+  bottom: 10px;
   left: 50%;
-  transform: translateX(-50%); /* Центрирование */
+  transform: translateX(-50%);
   z-index: 9999;
   width: 40px;
   height: 40px;
-  font-size: 26px;
-  color: #e0d1fa;
-  border: none;
-  border-radius: 8px;
-  background: linear-gradient(to bottom, #020aff, #001848);
-  box-shadow:
-    0 4px 10px rgba(0, 0, 0, 0.3),
-    inset 0 2px 4px rgba(255, 255, 255, 0.8);
-  cursor: pointer;
-  transition:
-    transform 0.1s,
-    box-shadow 0.2s,
-    filter 0.2s;
-}
-
-#btn-menu:active {
-  transform: translateX(-50%) scale(0.96); /* Сохраняем центрирование и добавляем скейл */
-  box-shadow:
-    0 0 20px rgba(1, 1, 126, 0.9),
-    0 0 40px rgba(0, 150, 255, 0.7);
-  filter: brightness(1.2);
 }
