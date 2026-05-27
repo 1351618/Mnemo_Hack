@@ -32,11 +32,17 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function renderWords(data) {
-    const block = document.getElementById("block-words");
+    const block = document.getElementById("words-list");
     block.innerHTML = "";
     data.forEach((row) => {
       const div = document.createElement("div");
-      div.textContent = `${row[0]} | ${row[2]} | ${row[4]} | ${row[6]} | ${row[8]} | ${row[10]}`;
+      // Создаем ячейки отдельно для Grid
+      div.innerHTML = `
+      <span>${row[6]}</span>
+      <span>${row[8]}</span>
+      <span>${row[10]}</span>
+      <span>${row[12]}</span>
+    `;
       block.appendChild(div);
     });
   }
@@ -49,6 +55,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (row[0] === "lang-2") document.getElementById("lang-2").value = row[1];
     });
   }
+
+  // --------------------------------
+  // слова поиск
+
+  // --------------------------------
 
   document
     .getElementById("btn-save-langs")
@@ -127,6 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   // -----------------------
+  // статистика
   const totalWords = 1500;
 
   const data = [
@@ -207,8 +219,8 @@ document.addEventListener("DOMContentLoaded", () => {
     showScreen("block-learn");
   document.getElementById("btn-words").onclick = () =>
     showScreen("block-words");
-  document.getElementById("btn-order").onclick = () =>
-    showScreen("block-order");
+  // document.getElementById("btn-order").onclick = () =>
+  //   showScreen("block-order");
   document.getElementById("btn-settings").onclick = () =>
     showScreen("block-settings");
   document.getElementById("btn-add").onclick = () => showScreen("block-add");

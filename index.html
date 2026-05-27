@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
@@ -37,20 +37,43 @@
           <div class="menu-stats-total">
             Всего слов: <strong id="total"></strong>
           </div>
+          <section id="parameters">
+            <div class="sect-param">
+              <h3>Диапазон</h3>
+              <div>
+                <input type="number" placeholder="0" min="0" />
+                <span> - </span>
+                <input type="number" placeholder="Макс" min="0" />
+              </div>
+              <div>
+                <h3>Учим</h3>
+                <select>
+                  <option>Выбор 1</option>
+                </select>
+                <select>
+                  <option>Выбор 2</option>
+                </select>
+              </div>
+            </div>
+            <div class="sect-param">
+              <div>
+                <h3>Отобразить</h3>
+                <label><input type="checkbox" /> нум.</label>
+                <label><input type="checkbox" /> цбк</label>
+                <label><input type="checkbox" /> яз 1</label>
+                <label><input type="checkbox" /> яз 2</label>
+              </div>
+            </div>
+          </section>
         </div>
 
         <!-- Кнопки -->
         <div id="menu-buttons">
-          <button id="btn-order">Порядок</button>
           <button id="btn-start">Учить</button>
           <button id="btn-words">Слова</button>
           <button id="btn-add">Добавить слово</button>
           <button id="btn-settings">⚙️</button>
         </div>
-      </div>
-      <!-- ПОРЯДОК -->
-      <div id="block-order" style="display: none">
-        block-order настройки для показа карточек
       </div>
 
       <!-- УЧИТЬ -->
@@ -68,7 +91,11 @@
 
       <!-- СЛОВА -->
       <div id="block-words" style="display: none">
-        block-words блок со всеми имеющимися словами
+        <input type="text" id="search-input" placeholder="Поиск по словам..." />
+
+        <div id="words-list" class="scroll-container">
+          block-words блок со всеми имеющимися словами
+        </div>
       </div>
 
       <!-- ДОБАВИТЬ -->

@@ -9,6 +9,10 @@ body {
   background-color: #191921;
   color: #e0d1fa;
 }
+h3 {
+  padding: 0px;
+  margin: 0px;
+}
 main {
   /* border: 2px solid #36e835; */
   position: fixed;
@@ -45,29 +49,37 @@ div[id^="block-"] {
 }
 
 #menu-buttons button {
+  min-height: 40px;
+  max-height: 60px;
+  flex-grow: 1;
   width: 90%;
-  padding: 15px;
+  /* padding: 15px; */
   margin: 10px 0;
   font-size: 20px;
   color: #e0d1fa;
-
   border: none;
   border-radius: 15px;
 
   background: linear-gradient(to bottom, #020aff, #001848);
 
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3),
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.3),
     inset 0 2px 4px rgba(255, 255, 255, 0.8);
 
   cursor: pointer;
 
-  transition: transform 0.1s, box-shadow 0.2s, filter 0.2s;
+  transition:
+    transform 0.1s,
+    box-shadow 0.2s,
+    filter 0.2s;
 }
 
 #menu-buttons button:active {
   transform: scale(0.96);
 
-  box-shadow: 0 0 20px rgba(1, 1, 126, 0.9), 0 0 40px rgba(0, 150, 255, 0.7);
+  box-shadow:
+    0 0 20px rgba(1, 1, 126, 0.9),
+    0 0 40px rgba(0, 150, 255, 0.7);
 
   filter: brightness(1.2);
 }
@@ -83,13 +95,29 @@ div[id^="block-"] {
     height: auto;
   }
 }
+/* --------- */
+#words-list > div {
+  display: grid;
+  grid-template-columns: 80px 1fr 1fr 1fr; /* 80px под номер, остальное поровну */
+  gap: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #333;
+  font-size: 14px;
+}
+
+.scroll-container {
+  height: calc(100vh - 150px); /* Высота экрана минус отступы и поиск */
+  overflow-y: auto; /* Включает прокрутку */
+  -webkit-overflow-scrolling: touch; /* Плавность для iOS */
+  padding: 10px;
+}
 
 /* --------- */
 .legend {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 2%;
   font-size: 11px;
   color: #888;
 }
@@ -106,8 +134,8 @@ div[id^="block-"] {
 .chart {
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  padding: 45px 30px 0px 20px;
+  gap: 10px;
+  padding: 2% 30px 0px 20px;
 }
 .row {
   display: flex;
@@ -155,37 +183,75 @@ div[id^="block-"] {
   font-weight: 500;
 }
 
+#parameters {
+  width: 92%;
+  background: #1a1a2e;
+  padding: 6px;
+  border-radius: 16px;
+  color: #e0d1fa;
+  margin: 5px 0;
+  display: flex;
+  justify-content: space-around;
+}
+
+#parameters h3 {
+  font-size: 1rem;
+  margin: 10px 0px 3px;
+  color: #8b85c1;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+#parameters input[type="number"],
+#parameters select {
+  background: #0f0f1a;
+  border: 1px solid #30304d;
+  color: #fff;
+  padding: 8px;
+  border-radius: 8px;
+  width: 80px;
+}
+
+#parameters label {
+  display: block;
+  margin: 8px 0;
+  cursor: pointer;
+}
+
+#parameters input[type="checkbox"] {
+  accent-color: #020aff;
+  margin-right: 10px;
+}
+
 /* ---------------- */
 
 #btn-menu {
   position: fixed;
   bottom: 20px;
-  right: 20px;
+  left: 50%;
+  transform: translateX(-50%); /* Центрирование */
   z-index: 9999;
-
-  width: 60px;
-  height: 60px;
-
+  width: 40px;
+  height: 40px;
   font-size: 26px;
   color: #e0d1fa;
-
   border: none;
-  border-radius: 15px;
-
+  border-radius: 8px;
   background: linear-gradient(to bottom, #020aff, #001848);
-
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3),
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.3),
     inset 0 2px 4px rgba(255, 255, 255, 0.8);
-
   cursor: pointer;
-
-  transition: transform 0.1s, box-shadow 0.2s, filter 0.2s;
+  transition:
+    transform 0.1s,
+    box-shadow 0.2s,
+    filter 0.2s;
 }
 
 #btn-menu:active {
-  transform: scale(0.96);
-
-  box-shadow: 0 0 20px rgba(1, 1, 126, 0.9), 0 0 40px rgba(0, 150, 255, 0.7);
-
+  transform: translateX(-50%) scale(0.96); /* Сохраняем центрирование и добавляем скейл */
+  box-shadow:
+    0 0 20px rgba(1, 1, 126, 0.9),
+    0 0 40px rgba(0, 150, 255, 0.7);
   filter: brightness(1.2);
 }
