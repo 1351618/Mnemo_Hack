@@ -34,18 +34,44 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderWords(data) {
     const block = document.getElementById("words-list");
     block.innerHTML = "";
+
     data.forEach((row) => {
       const div = document.createElement("div");
-      // Создаем ячейки отдельно для Grid
+      div.className = "word-row";
+
+      // Используем шаблонную строку для создания структуры
       div.innerHTML = `
-      <span>${row[6]}</span>
-      <span>${row[8]}</span>
-      <span>${row[10]}</span>
-      <span>${row[12]}</span>
+      <span>${row[6] || ""}</span>
+      <span>${row[8] || ""}</span>
+      <span>${row[10] || ""}</span>
+      <span>${row[12] || ""}</span>
     `;
+
+      div.onclick = () => showWordDetail(row);
       block.appendChild(div);
     });
   }
+
+  function showWordDetail(row) {
+    hideAll(); // Скрываем остальные блоки
+    const detailBlock = document.getElementById("block-word-detail");
+    detailBlock.style.display = "flex"; // Используем flex для центрирования/расположения
+
+    const content = detailBlock.querySelector("#detail-content");
+    content.innerHTML = `
+    <div class="detail-item"><strong>Номер:</strong> ${row[6]}</div>
+    <div class="detail-item"><strong>Слово:</strong> ${row[8]}</div>
+    <div class="detail-item"><strong>Язык 1:</strong> ${row[10]}</div>
+    <div class="detail-item"><strong>Язык 2:</strong> ${row[12]}</div>
+    <div class="detail-item"><strong>Комментарий:</strong> ${row[2]}</div>
+  `;
+  }
+
+  // Обработчик кнопки "Назад" (выполнить один раз при загрузке)
+  document.getElementById("btn-back-words").onclick = () => {
+    hideAll();
+    document.getElementById("block-words").style.display = "block";
+  };
 
   function applySettings(settings) {
     settings.forEach((row) => {
@@ -219,8 +245,8 @@ document.addEventListener("DOMContentLoaded", () => {
     showScreen("block-learn");
   document.getElementById("btn-words").onclick = () =>
     showScreen("block-words");
-  // document.getElementById("btn-order").onclick = () =>
-  //   showScreen("block-order");
+  document.getElementById("block-word-detail").onclick = () =>
+    showScreen("block-order");
   document.getElementById("btn-settings").onclick = () =>
     showScreen("block-settings");
   document.getElementById("btn-add").onclick = () => showScreen("block-add");
