@@ -67,12 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
   `;
   }
 
-  // Обработчик кнопки "Назад" (выполнить один раз при загрузке)
-  document.getElementById("btn-back-words").onclick = () => {
-    hideAll();
-    document.getElementById("block-words").style.display = "block";
-  };
-
   function applySettings(settings) {
     settings.forEach((row) => {
       if (row[0] === "lang-native")
@@ -81,6 +75,80 @@ document.addEventListener("DOMContentLoaded", () => {
       if (row[0] === "lang-2") document.getElementById("lang-2").value = row[1];
     });
   }
+
+  // --------------------------------
+  // настройки отображения карточек
+  // Настройки по умолчанию
+  const defaultParams = {
+    rangeMin: 0,
+    rangeMax: "",
+    order: "order", // "order" или "random"
+    showNum: false,
+    showCode: false,
+    showLang0: false,
+    showLang1: false,
+    showLang2: false,
+  };
+
+  function saveParams(params) {
+    localStorage.setItem("params", JSON.stringify(params));
+    console.log("params:", params);
+  }
+
+  function loadParams() {
+    const saved = localStorage.getItem("params");
+    return saved ? JSON.parse(saved) : defaultParams;
+  }
+
+  function applyParams(params) {
+    document.querySelectorAll("#parameters input[type=number]")[0].value =
+      params.rangeMin;
+    document.querySelectorAll("#parameters input[type=number]")[1].value =
+      params.rangeMax;
+    document.querySelectorAll("input[name=order]")[0].checked =
+      params.order === "order";
+    document.querySelectorAll("input[name=order]")[1].checked =
+      params.order === "random";
+    document.querySelectorAll("#parameters input[type=checkbox]")[0].checked =
+      params.showNum;
+    document.querySelectorAll("#parameters input[type=checkbox]")[1].checked =
+      params.showCode;
+    document.querySelectorAll("#parameters input[type=checkbox]")[2].checked =
+      params.showLang0;
+    document.querySelectorAll("#parameters input[type=checkbox]")[3].checked =
+      params.showLang1;
+    document.querySelectorAll("#parameters input[type=checkbox]")[4].checked =
+      params.showLang2;
+  }
+
+  function getParams() {
+    const nums = document.querySelectorAll("#parameters input[type=number]");
+    const checks = document.querySelectorAll(
+      "#parameters input[type=checkbox]",
+    );
+    const order = document.querySelector("input[name=order]:checked");
+    return {
+      rangeMin: nums[0].value,
+      rangeMax: nums[1].value,
+      order: order ? order.value : "order",
+      showNum: checks[0].checked,
+      showCode: checks[1].checked,
+      showLang0: checks[2].checked,
+      showLang1: checks[3].checked,
+      showLang2: checks[4].checked,
+    };
+  }
+
+  // Инициализация
+  const params = loadParams();
+  applyParams(params);
+  saveParams(params);
+
+  // Слушаем изменения
+  document.getElementById("parameters").addEventListener("change", () => {
+    const params = getParams();
+    saveParams(params);
+  });
 
   // --------------------------------
   // слова поиск
@@ -245,8 +313,10 @@ document.addEventListener("DOMContentLoaded", () => {
     showScreen("block-learn");
   document.getElementById("btn-words").onclick = () =>
     showScreen("block-words");
-  document.getElementById("block-word-detail").onclick = () =>
-    showScreen("block-order");
+  document.getElementById("btn-back-words").onclick = () =>
+    showScreen("block-words");
+  // document.getElementById("block-word-detail").onclick = () =>
+  //   showScreen("block-order");
   document.getElementById("btn-settings").onclick = () =>
     showScreen("block-settings");
   document.getElementById("btn-add").onclick = () => showScreen("block-add");

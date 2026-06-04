@@ -60,6 +60,10 @@ div[id^="block-"] {
   padding: 10px;
 }
 
+#btn-back-words {
+  margin: 0em 1em 0em 0em;
+}
+
 #block-menu {
   /* border: 2px solid #3565e8; */
   display: flex;
@@ -250,6 +254,8 @@ div[id^="block-"] {
     margin: 2px 0;
   }
 }
+
+/* ---------------- */
 
 /* ---------------- */
 
