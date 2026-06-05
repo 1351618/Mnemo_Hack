@@ -172,7 +172,7 @@ div[id^="block-"] {
 }
 .track {
   flex: 1;
-  height: 30px;
+  height: 20px;
   background: #272727;
   border-radius: 4px;
   position: relative;
@@ -181,7 +181,7 @@ div[id^="block-"] {
 .fill {
   position: absolute;
   left: 0;
-  height: 10px;
+  height: 6px;
   border-radius: 2px;
 }
 .row-nums {

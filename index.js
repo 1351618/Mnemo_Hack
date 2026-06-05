@@ -250,7 +250,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   // const TRACK_H = 18;
-  const LAYER_H = 10;
+  const LAYER_H = 6;
 
   document.getElementById("total").textContent = totalWords;
 
