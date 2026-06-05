@@ -256,6 +256,85 @@ div[id^="block-"] {
 }
 
 /* ---------------- */
+/* карточка раздел учить*/
+
+#block-learn {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 16px;
+}
+
+#card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  padding: 16px;
+}
+
+#card-number {
+  font-size: 12px;
+  color: #888;
+}
+
+#card-code {
+  font-size: 12px;
+  color: #888;
+}
+
+.card-top {
+  display: flex;
+  flex-direction: row;
+  gap: 10%;
+}
+
+@media (max-aspect-ratio: 1/1) {
+  .card-top {
+    flex-direction: column;
+    gap: 50%;
+  }
+}
+
+.card-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+#card-ru,
+#card-en,
+#card-gr {
+  font-size: 24px;
+  text-align: center;
+  min-width: 50%;
+}
+
+#card-comment {
+  font-size: 13px;
+  padding: 10px 5px 60px;
+  color: #888;
+  text-align: center;
+  border-top: 1px solid #eee;
+}
+
+.card-item {
+  position: relative;
+  cursor: pointer;
+}
+
+.card-item.hidden::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  background: #262854;
+  border-radius: 8px;
+}
 
 /* ---------------- */
 
