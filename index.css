@@ -45,6 +45,27 @@ button:active {
   filter: brightness(1.2);
 }
 
+#loader {
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
+  display: block;
+  text-align: center;
+  line-height: 40px;
+  animation: spin 1s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 main {
   /* border: 2px solid #36e835; */
   position: fixed;
@@ -317,7 +338,7 @@ div[id^="block-"] {
 
 #card-comment {
   font-size: 13px;
-  padding: 10px 5px 60px;
+
   color: #888;
   text-align: center;
   border-top: 1px solid #eee;
@@ -336,6 +357,22 @@ div[id^="block-"] {
   border-radius: 8px;
 }
 
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 5px 60px;
+}
+
+.card-item.known {
+  outline: 1px solid #22c88f;
+  border-radius: 6px;
+  padding: 4px;
+}
+
+#card.all-known {
+  background: #0f250f;
+  border: 1px solid #159412;
+}
 /* ---------------- */
 
 #btn-menu {

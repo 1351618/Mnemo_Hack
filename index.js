@@ -1,11 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
   const SCRIPT_URL_KEY = "scriptUrl";
+  let allWords = [];
+  let sessionWords = [];
+  let currentIndex = 0;
 
   async function loadData() {
     const url = localStorage.getItem(SCRIPT_URL_KEY);
     if (!url) return null;
+    document.getElementById("loader").style.display = "block";
     const response = await fetch(url);
     const result = await response.json();
+    document.getElementById("loader").style.display = "none";
     return result;
   }
 
@@ -23,11 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadData().then((result) => {
     if (result) {
-      console.log("Данные:", result);
+      allWords = result.data;
       renderWords(result.data);
       applySettings(result.settings);
-    } else {
-      // document.getElementById("block-settings").style.display = "block";
+      renderStats();
     }
   });
 
@@ -78,21 +82,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --------------------------------
   // настройки отображения карточек
-  // Настройки по умолчанию
+  // Настройки по умолчанию если данных нет
   const defaultParams = {
     rangeMin: 0,
     rangeMax: "",
-    order: "order", // "order" или "random"
+    order: "order",
     showNum: false,
     showCode: false,
     showLang0: false,
     showLang1: false,
     showLang2: false,
+    showComment: false,
+    knownNum: false,
+    knownCode: false,
+    knownLang0: false,
+    knownLang1: false,
+    knownLang2: false,
   };
 
   function saveParams(params) {
     localStorage.setItem("params", JSON.stringify(params));
-    console.log("params:", params);
+    // console.log("params:", params);
   }
 
   function loadParams() {
@@ -119,6 +129,8 @@ document.addEventListener("DOMContentLoaded", () => {
       params.showLang1;
     document.querySelectorAll("#parameters input[type=checkbox]")[4].checked =
       params.showLang2;
+    document.querySelectorAll("#parameters input[type=checkbox]")[5].checked =
+      params.showComment;
   }
 
   function getParams() {
@@ -136,6 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
       showLang0: checks[2].checked,
       showLang1: checks[3].checked,
       showLang2: checks[4].checked,
+      showComment: checks[5].checked,
     };
   }
 
@@ -151,8 +164,168 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // --------------------------------
-  // слова поиск
+  // временный список слов для карточек
+  function buildSession() {
+    const params = loadParams();
+    const min = Number(params.rangeMin) || 0;
+    const max = Number(params.rangeMax) || Infinity;
 
+    sessionWords = allWords
+      .filter((row) => {
+        const num = Number(String(row[6]).replace(" ", ""));
+        return num >= min && num <= max && row[8] !== "";
+      })
+      .map((row) => ({
+        number: { value: row[6], show: params.showNum, known: row[5] },
+        code: { value: row[4], show: params.showCode, known: row[3] },
+        lang0: { value: row[8], show: params.showLang0, known: row[7] },
+        lang1: { value: row[10], show: params.showLang1, known: row[9] },
+        lang2: { value: row[12], show: params.showLang2, known: row[11] },
+        comment: { value: row[2], show: params.showComment },
+        learned: false,
+      }));
+
+    if (params.order === "random") {
+      sessionWords = sessionWords.sort(() => Math.random() - 0.5);
+    }
+
+    // console.log("сессия:", sessionWords);
+  }
+
+  // --------------------------------
+  // отображение карточек
+
+  function showCard() {
+    const word = sessionWords[currentIndex];
+    if (!word) return;
+
+    document.getElementById("card-number").textContent = word.number.value;
+    document.getElementById("card-code").textContent = word.code.value;
+    document.getElementById("card-ru").textContent = word.lang0.value;
+    document.getElementById("card-en").textContent = word.lang1.value;
+    document.getElementById("card-gr").textContent = word.lang2.value;
+    document.getElementById("card-comment").textContent = word.comment.value;
+    document.getElementById("card-learned").textContent = word.learned
+      ? "знаю"
+      : "не знаю";
+
+    document
+      .getElementById("card-number")
+      .classList.toggle("known", word.number.known);
+    document
+      .getElementById("card-code")
+      .classList.toggle("known", word.code.known);
+    document
+      .getElementById("card-ru")
+      .classList.toggle("known", word.lang0.known);
+    document
+      .getElementById("card-en")
+      .classList.toggle("known", word.lang1.known);
+    document
+      .getElementById("card-gr")
+      .classList.toggle("known", word.lang2.known);
+
+    document
+      .getElementById("card-number")
+      .classList.toggle("hidden", !word.number.show);
+    document
+      .getElementById("card-code")
+      .classList.toggle("hidden", !word.code.show);
+    document
+      .getElementById("card-ru")
+      .classList.toggle("hidden", !word.lang0.show);
+    document
+      .getElementById("card-en")
+      .classList.toggle("hidden", !word.lang1.show);
+    document
+      .getElementById("card-gr")
+      .classList.toggle("hidden", !word.lang2.show);
+    document
+      .getElementById("card-comment")
+      .classList.toggle("hidden", !word.comment.show);
+  }
+
+  // --------------------------------
+  //  листание карточек
+
+  document.getElementById("card").addEventListener("touchstart", (e) => {
+    touchStartX = e.touches[0].clientX;
+  });
+
+  document.getElementById("card").addEventListener("touchend", (e) => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (diff > 50) {
+      if (currentIndex < sessionWords.length - 1) currentIndex++;
+      showCard();
+    } else if (diff < -50) {
+      if (currentIndex > 0) currentIndex--;
+      showCard();
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") {
+      if (currentIndex < sessionWords.length - 1) currentIndex++;
+      showCard();
+    } else if (e.key === "ArrowLeft") {
+      if (currentIndex > 0) currentIndex--;
+      showCard();
+    }
+  });
+
+  // --------------------------------
+  //  знаю не знаю
+
+  document.getElementById("card-learned").addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (!sessionWords[currentIndex]) return;
+    const word = sessionWords[currentIndex];
+    word.learned = !word.learned;
+    e.target.textContent = word.learned ? "знаю" : "не знаю";
+  });
+
+  // --------------------------------
+  //  скрыть показать элемент
+  document.querySelectorAll(".card-item").forEach((el) => {
+    let pressTimer = null;
+
+    const startPress = (e) => {
+      e.stopPropagation();
+      pressTimer = setTimeout(() => {
+        pressTimer = null;
+        const word = sessionWords[currentIndex];
+        if (!word) return;
+        if (el.id === "card-number") word.number.known = !word.number.known;
+        if (el.id === "card-code") word.code.known = !word.code.known;
+        if (el.id === "card-ru") word.lang0.known = !word.lang0.known;
+        if (el.id === "card-en") word.lang1.known = !word.lang1.known;
+        if (el.id === "card-gr") word.lang2.known = !word.lang2.known;
+        el.classList.toggle("known");
+      }, 300);
+    };
+
+    const endPress = (e) => {
+      if (pressTimer) {
+        clearTimeout(pressTimer);
+        pressTimer = null;
+        e.stopPropagation();
+        const word = sessionWords[currentIndex];
+        if (!word) return;
+        if (el.id === "card-number") word.number.show = !word.number.show;
+        if (el.id === "card-code") word.code.show = !word.code.show;
+        if (el.id === "card-ru") word.lang0.show = !word.lang0.show;
+        if (el.id === "card-en") word.lang1.show = !word.lang1.show;
+        if (el.id === "card-gr") word.lang2.show = !word.lang2.show;
+        if (el.id === "card-comment") word.comment.show = !word.comment.show;
+        el.classList.toggle("hidden");
+      }
+    };
+
+    el.addEventListener("mousedown", startPress);
+    el.addEventListener("mouseup", endPress);
+    el.addEventListener("touchstart", startPress);
+    el.addEventListener("touchend", endPress);
+  });
   // --------------------------------
 
   document
@@ -172,13 +345,11 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Сохранено!");
     });
 
-  const GROUPS = {
-    "80%": [0, 999],
-    глаг: [1000, 3999],
-    сущ: [4000, 7999],
-    прилаг: [8000, 8999],
-    наречия: [9000, 9999],
-  };
+  const groups = [
+    { label: "80%", min: 0, max: 999 },
+    { label: "Глаг.", min: 1000, max: 3999 },
+    { label: "Сущ.", min: 4000, max: 9999 },
+  ];
 
   document
     .getElementById("btn-add-word")
@@ -188,7 +359,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!url) return alert("Нет ссылки на таблицу");
 
       const group = document.getElementById("add-group").value;
-      const [min, max] = GROUPS[group];
+      const groupObj = groups.find((g) => g.label === group);
+      const [min, max] = [groupObj.min, groupObj.max];
 
       const result = await loadData();
       const usedNumbers = result.data.map((row) => row[4]);
@@ -232,59 +404,62 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   // -----------------------
-  // статистика
-  const totalWords = 1500;
+  // статистика;
 
-  const data = [
-    { label: "80%", word: 10, eng: 40, gre: 10 },
-    { label: "Сущ.", word: 20, eng: 50, gre: 20 },
-    { label: "Глаг.", word: 30, eng: 60, gre: 30 },
-    { label: "Нар.", word: 40, eng: 70, gre: 56 },
-    { label: "Прил.", word: 50, eng: 80, gre: 82 },
-  ];
+  function renderStats() {
+    document.getElementById("total").textContent = allWords.filter(
+      (r) => r[8] !== "",
+    ).length;
 
-  const layers = [
-    { key: "word", color: "#e47575" }, // светлый
-    { key: "eng", color: "#9D4EDD" }, // средний
-    { key: "gre", color: "#22c88f" }, // тёмный
-  ];
+    const chart = document.getElementById("chart");
+    chart.innerHTML = "";
 
-  // const TRACK_H = 18;
-  const LAYER_H = 6;
+    const LAYER_H = 6;
+    const layers = [
+      { key: "word", col: 7, color: "#e47575" },
+      { key: "eng", col: 9, color: "#9D4EDD" },
+      { key: "gre", col: 11, color: "#22c88f" },
+    ];
 
-  document.getElementById("total").textContent = totalWords;
+    groups.forEach((group) => {
+      const groupWords = allWords.filter((r) => {
+        const num = Number(String(r[6]).replace(" ", ""));
+        return num >= group.min && num <= group.max && r[8] !== "";
+      });
 
-  const chart = document.getElementById("chart");
+      const total = groupWords.length;
+      if (total === 0) return;
 
-  data.forEach((row) => {
-    const bar = document.createElement("div");
-    bar.className = "row";
+      const bar = document.createElement("div");
+      bar.className = "row";
 
-    const label = document.createElement("span");
-    label.className = "row-label";
-    label.textContent = row.label;
+      const label = document.createElement("span");
+      label.className = "row-label";
+      label.textContent = group.label;
 
-    const track = document.createElement("div");
-    track.className = "track";
+      const track = document.createElement("div");
+      track.className = "track";
 
-    layers.forEach((layer, i) => {
-      const fill = document.createElement("div");
-      fill.className = "fill";
-      fill.style.top = i * LAYER_H + "px";
-      fill.style.width = row[layer.key] + "%";
-      fill.style.background = layer.color;
-      track.appendChild(fill);
+      layers.forEach((layer, i) => {
+        const fill = document.createElement("div");
+        fill.className = "fill";
+        fill.style.top = i * LAYER_H + "px";
+        fill.style.width =
+          Math.round(
+            (groupWords.filter((r) => r[layer.col] === true).length / total) *
+              100,
+          ) + "%";
+        fill.style.background = layer.color;
+        track.appendChild(fill);
+      });
+
+      bar.appendChild(label);
+      bar.appendChild(track);
+      chart.appendChild(bar);
+      console.log("groups:", groups);
+      console.log("allWords:", allWords.length);
     });
-
-    const nums = document.createElement("span");
-    nums.className = "row-nums";
-    nums.textContent = `${row.word}·${row.eng}·${row.gre}`;
-
-    bar.appendChild(label);
-    bar.appendChild(track);
-    // bar.appendChild(nums);
-    chart.appendChild(bar);
-  });
+  }
 
   // -----------------------
   // отображение блоков
@@ -309,8 +484,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // кнопки
-  document.getElementById("btn-start").onclick = () =>
+  document.getElementById("btn-start").onclick = () => {
+    buildSession();
+    showCard();
     showScreen("block-learn");
+  };
   document.getElementById("btn-words").onclick = () =>
     showScreen("block-words");
   document.getElementById("btn-back-words").onclick = () =>

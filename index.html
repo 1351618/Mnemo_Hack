@@ -33,6 +33,7 @@
           </div>
 
           <div class="chart" id="chart"></div>
+          <div id="loader" style="display: none">⏳</div>
 
           <div class="menu-stats-total">
             Всего слов: <strong id="total"></strong>
@@ -64,6 +65,7 @@
                 <label><input type="checkbox" /> яз 0</label>
                 <label><input type="checkbox" /> яз 1</label>
                 <label><input type="checkbox" /> яз 2</label>
+                <label><input type="checkbox" /> ком</label>
               </div>
             </div>
           </section>
@@ -80,17 +82,20 @@
 
       <!-- УЧИТЬ -->
       <div id="block-learn" style="display: none">
-        <div id="card">
+        <div id="card" class="">
           <div class="card-top">
             <div id="card-number" class="card-item">НОМЕР</div>
             <div id="card-code" class="card-item">КОД-ЦБК</div>
           </div>
           <div class="card-center">
-            <div id="card-ru" class="card-item hidden">РУ</div>
+            <div id="card-ru" class="card-item">РУ</div>
             <div id="card-en" class="card-item">АНГ</div>
             <div id="card-gr" class="card-item">ГРЕЧ</div>
           </div>
-          <div id="card-comment" class="card-item">КОММЕНТ</div>
+          <div class="card-bottom">
+            <div id="card-comment" class="card-item">КОММЕНТ</div>
+            <button id="card-learned">не знаю</button>
+          </div>
         </div>
       </div>
 
