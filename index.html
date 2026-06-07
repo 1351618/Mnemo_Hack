@@ -168,56 +168,52 @@
 
       <!-- НАСТРОЙКИ -->
       <div id="block-settings" style="display: none">
-        <p>настройки - ссылка языки итд</p>
-        <!-- Ссылка -->
-        <div id="settings-url">
-          <input
-            id="input-url"
-            type="text"
-            placeholder="Вставь ссылку на Apps Script"
-          />
-          <button id="btn-save-url">Сохранить</button>
+  <div id="settings-url">
+    <div id="instructions">
+      <h3>Инструкция</h3>
+      <p>Это только интерфейс. Все твои данные хранятся в твоём Google документе.</p>
+      <ol>
+        <li>
+          Создай <a href="https://sheets.google.com" target="_blank">Google таблицу</a>
+        </li>
+        <li>
+          В первый лист вставь шаблон:
+          <pre id="template-data">2	19.05.26	комент	TRUE	мамон	TRUE	0 000	TRUE	я	TRUE	i	TRUE	εγώ
+-	-	комент	TRUE	манеж	TRUE	0 001	FALSE	мы	TRUE	we	FALSE	εμείς</pre>
+          <button id="btn-copy-template">Скопировать шаблон</button>
+        </li>
+        <li>
+          Открой <a href="https://script.google.com" target="_blank">script.google.com</a>
+          <p>https://script.google.com/macros/s/AKfycbzT1P1hnL-7uaiwJ0Eu4-4RCPiqTLdNCGjZxiF-8d6aoH9nXqLlto_wIoEK-u5pxycg/exec</p>
+        </li>
+       <li>
+  Вставь туда скрипт
+  <code id="script-code" style="display: none"></code>
+  <button id="btn-copy-script">Скопировать код скрипта</button>
+  <br>→ Развернуть
+  <br>→ Новое развертывание
+  <br>→ Выберите тип: Веб-приложение
+  <br>→ У кого есть доступ: Все
+  <br>→ Начать развертывание
+  <br>→ Скопируйте нижнюю ссылку и вставьте сюда:
+  <input id="input-url" type="text" placeholder="Вставь ссылку на Apps Script" />
+  <button id="btn-save-url">Сохранить</button>
+</li>
+        <li>Скопируй полученную ссылку и вставь в поле выше</li>
+      </ol>
+    </div>
+  </div>
 
-          <!-- Инструкция (пока не трогаем) -->
-          <div id="instructions">
-            <p>инструкция</p>
-            <p>https://script.google.com/</p>
-            <p>
-              Это только интерфейс. Все твои данные хранятся в твоём Google
-              документе.
-            </p>
-            <ol>
-              <li>
-                Создай
-                <a href="https://sheets.google.com" target="_blank"
-                  >Google таблицу</a
-                >
-              </li>
-              <li>
-                В первый лист вставь шаблон:<br />
-                <code
-                  >комент | TRUE | КодЦбк | TRUE | 0 000 | TRUE | я | TRUE | i |
-                  TRUE | εγώ</code
-                >
-              </li>
-              <li>
-                Открой
-                <a href="https://script.google.com" target="_blank"
-                  >script.google.com</a
-                >
-
-                <p>
-                  https://script.google.com/macros/s/AKfycbxYzgRvxVAUvNIOzWi2KmAfH5ElaoTDN2wgW21LsHkMt-66JhSu6ncEFxjWyolX3QJ0/exec
-                </p>
-              </li>
-              <li>
-                Вставь туда скрипт (ниже) → Сохрани → Деплой → Веб-приложение →
-                доступ: Все
-              </li>
-              <li>Скопируй полученную ссылку и вставь в поле выше</li>
-            </ol>
-          </div>
-        </div>
+  <div id="settings-langs">
+    <label>Родной язык</label>
+    <input id="lang-native" type="text" placeholder="например: русский" />
+    <label>Язык 1</label>
+    <input id="lang-1" type="text" placeholder="например: английский" />
+    <label>Язык 2</label>
+    <input id="lang-2" type="text" placeholder="например: греческий" />
+    <button id="btn-save-langs">Сохранить языки</button>
+  </div>
+</div>
 
         <!-- Языки -->
         <div id="settings-langs">

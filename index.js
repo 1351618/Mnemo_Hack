@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let allWords = [];
   let sessionWords = [];
   let currentIndex = 0;
+  let changedWords = [];
 
   async function loadData() {
     const url = localStorage.getItem(SCRIPT_URL_KEY);
@@ -301,6 +302,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (el.id === "card-en") word.lang1.known = !word.lang1.known;
         if (el.id === "card-gr") word.lang2.known = !word.lang2.known;
         el.classList.toggle("known");
+        if (!changedWords.includes(word)) changedWords.push(word);
       }, 300);
     };
 
@@ -500,6 +502,63 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-add").onclick = () => showScreen("block-add");
 
   // кнопка назад в меню
-  menuBtn.onclick = showMenu;
+  menuBtn.onclick = async () => {
+    const wasLearning =
+      document.getElementById("block-learn").style.display !== "none";
+    if (wasLearning) {
+      await syncToAllWords();
+      renderStats();
+      changedWords = [];
+    }
+    showMenu();
+  };
   // -----------------------
+  // обновляем основной массив данных
+  async function syncToAllWords() {
+    changedWords.forEach((word) => {
+      const row = allWords.find((r) => r[6] === word.number.value);
+      if (!row) return;
+      row[5] = word.number.known;
+      row[3] = word.code.known;
+      row[7] = word.lang0.known;
+      row[9] = word.lang1.known;
+      row[11] = word.lang2.known;
+    });
+
+    const url = localStorage.getItem(SCRIPT_URL_KEY);
+    if (!url) return;
+
+    await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({
+        action: "update-known",
+        data: changedWords.map((word) => ({
+          number: word.number.value,
+          knownNum: word.number.known,
+          knownCode: word.code.known,
+          knownLang0: word.lang0.known,
+          knownLang1: word.lang1.known,
+          knownLang2: word.lang2.known,
+        })),
+      }),
+    });
+  }
+
+  // -------------------------
+  // копирование кода
+  document
+    .getElementById("btn-copy-script")
+    .addEventListener("click", async () => {
+      const response = await fetch("./script.gs");
+      const code = await response.text();
+      navigator.clipboard.writeText(code);
+      alert("Скопировано!");
+    });
+  // --------------------------
+  // копирование шаблона
+  document.getElementById("btn-copy-template").addEventListener("click", () => {
+    const text = document.getElementById("template-data").textContent;
+    navigator.clipboard.writeText(text);
+    alert("Скопировано!");
+  });
 });
