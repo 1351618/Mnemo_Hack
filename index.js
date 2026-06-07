@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let sessionWords = [];
   let currentIndex = 0;
   let changedWords = [];
+  let touchStartX = 0;
 
   async function loadData() {
     const url = localStorage.getItem(SCRIPT_URL_KEY);
