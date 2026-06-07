@@ -294,6 +294,7 @@ div[id^="block-"] {
   border: 1px solid #ccc;
   border-radius: 16px;
   padding: 16px;
+  user-select: none;
 }
 
 #card-number {
