@@ -290,9 +290,12 @@ document.addEventListener("DOMContentLoaded", () => {
   //  скрыть показать элемент
   document.querySelectorAll(".card-item").forEach((el) => {
     let pressTimer = null;
+    let itemSwipeStartX = 0;
 
     const startPress = (e) => {
+      e.preventDefault();
       e.stopPropagation();
+      itemSwipeStartX = e.touches ? e.touches[0].clientX : e.clientX;
       pressTimer = setTimeout(() => {
         pressTimer = null;
         const word = sessionWords[currentIndex];
@@ -308,6 +311,18 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const endPress = (e) => {
+      const endX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+      const diff = endX - itemSwipeStartX;
+
+      if (diff > 80) {
+        clearTimeout(pressTimer);
+        pressTimer = null;
+        e.stopPropagation();
+        const word = sessionWords[currentIndex];
+        console.log("свайп по слову:", word);
+        return;
+      }
+
       if (pressTimer) {
         clearTimeout(pressTimer);
         pressTimer = null;
