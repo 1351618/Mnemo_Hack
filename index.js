@@ -319,7 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
         pressTimer = null;
         e.stopPropagation();
         const word = sessionWords[currentIndex];
-        console.log("свайп по слову:", word);
+        speakWord(el.id, word);
         return;
       }
 
@@ -345,6 +345,45 @@ document.addEventListener("DOMContentLoaded", () => {
     el.addEventListener("touchend", endPress);
   });
   // --------------------------------
+
+  // озвучка слова 4
+  function speakWord(elId, word) {
+    let text = "";
+    let lang = "ru-RU";
+    if (elId === "card-ru") {
+      text = word.lang0.value;
+      lang = "ru-RU";
+    }
+    if (elId === "card-en") {
+      text = word.lang1.value;
+      lang = "en-US";
+    }
+    if (elId === "card-gr") {
+      text = word.lang2.value;
+      lang = "el-GR";
+    }
+    if (!text) return;
+
+    const speak = () => {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = lang;
+      utterance.rate = 1.3;
+      const voices = speechSynthesis.getVoices();
+      const voice = voices.find((v) => v.lang.startsWith(lang.split("-")[0]));
+      if (voice) utterance.voice = voice;
+      speechSynthesis.speak(utterance);
+    };
+
+    if (speechSynthesis.getVoices().length) {
+      speak();
+    } else {
+      speechSynthesis.onvoiceschanged = speak;
+    }
+    console.log(speechSynthesis.getVoices());
+  }
+  // озвучка слова 2
+
+  // -------------------------------
 
   document
     .getElementById("btn-save-langs")

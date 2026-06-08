@@ -22,13 +22,13 @@ input {
   width: 80px;
 }
 button {
-  color: #e0d1fa;
+  color: #843dff;
   border: none;
   border-radius: 4px;
   background: linear-gradient(to bottom, #020aff, #001848);
   box-shadow:
     0 4px 10px rgba(0, 0, 0, 0.3),
-    inset 0 2px 4px rgba(255, 255, 255, 0.8);
+    inset 0 2px 4px #020aff;
   cursor: pointer;
   transition:
     transform 0.1s,
@@ -291,19 +291,19 @@ div[id^="block-"] {
   flex-direction: column;
   height: 100%;
   position: relative;
-  border: 1px solid #ccc;
+  border: 1px solid #00179f;
   border-radius: 16px;
   padding: 16px;
   user-select: none;
 }
 
 #card-number {
-  font-size: 12px;
+  font-size: 14px;
   color: #888;
 }
 
 #card-code {
-  font-size: 12px;
+  font-size: 14px;
   color: #888;
 }
 
@@ -311,13 +311,7 @@ div[id^="block-"] {
   display: flex;
   flex-direction: row;
   gap: 10%;
-}
-
-@media (max-aspect-ratio: 1/1) {
-  .card-top {
-    flex-direction: column;
-    gap: 50%;
-  }
+  justify-content: space-between;
 }
 
 .card-center {
@@ -342,7 +336,7 @@ div[id^="block-"] {
 
   color: #888;
   text-align: center;
-  border-top: 1px solid #eee;
+  /* border-top: 1px solid #eee; */
 }
 
 .card-item {
@@ -362,10 +356,11 @@ div[id^="block-"] {
   display: flex;
   justify-content: space-between;
   padding: 10px 5px 60px;
+  border-top: 1px solid #00179f;
 }
 
 .card-item.known {
-  outline: 1px solid #22c88f;
+  background-color: #142d12;
   border-radius: 6px;
   padding: 4px;
 }
