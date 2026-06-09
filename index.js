@@ -6,6 +6,18 @@ document.addEventListener("DOMContentLoaded", () => {
   let changedWords = [];
   let touchStartX = 0;
 
+  // ----------------------------
+  // разрешение звука после касания экрана
+  document.addEventListener(
+    "touchstart",
+    () => {
+      const u = new SpeechSynthesisUtterance(" ");
+      speechSynthesis.speak(u);
+      speechSynthesis.cancel();
+    },
+    { once: true },
+  );
+  // ----------------------------
   async function loadData() {
     const url = localStorage.getItem(SCRIPT_URL_KEY);
     if (!url) return null;
@@ -439,6 +451,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (voice) u.voice = voice;
 
       speechSynthesis.speak(u);
+      console.log("speakWord triggered:", text, lang);
     }, 150);
   }
 
