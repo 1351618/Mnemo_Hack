@@ -248,30 +248,69 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --------------------------------
-  //  листание карточек
+  // //  листание карточек
 
-  document.getElementById("card").addEventListener("touchstart", (e) => {
-    touchStartX = e.touches[0].clientX;
-  });
+  // document.getElementById("card").addEventListener("touchstart", (e) => {
+  //   touchStartX = e.touches[0].clientX;
+  // });
+
+  // document.getElementById("card").addEventListener("touchend", (e) => {
+  //   const diff = touchStartX - e.changedTouches[0].clientX;
+  //   if (diff > 50) {
+  //     if (currentIndex < sessionWords.length - 1) currentIndex++;
+  //     showCard();
+  //   } else if (diff < -50) {
+  //     if (currentIndex > 0) currentIndex--;
+  //     showCard();
+  //   }
+  // });
+
+  // document.addEventListener("keydown", (e) => {
+  //   if (e.key === "ArrowRight") {
+  //     if (currentIndex < sessionWords.length - 1) currentIndex++;
+  //     showCard();
+  //   } else if (e.key === "ArrowLeft") {
+  //     if (currentIndex > 0) currentIndex--;
+  //     showCard();
+  //   }
+  // });
 
   document.getElementById("card").addEventListener("touchend", (e) => {
     const diff = touchStartX - e.changedTouches[0].clientX;
+    const card = document.getElementById("card");
     if (diff > 50) {
       if (currentIndex < sessionWords.length - 1) currentIndex++;
-      showCard();
+      card.style.transform = "translateX(-5%)";
+      setTimeout(() => {
+        card.style.transform = "";
+        showCard();
+      }, 150);
     } else if (diff < -50) {
       if (currentIndex > 0) currentIndex--;
-      showCard();
+      card.style.transform = "translateX(5%)";
+      setTimeout(() => {
+        card.style.transform = "";
+        showCard();
+      }, 150);
     }
   });
 
   document.addEventListener("keydown", (e) => {
+    const card = document.getElementById("card");
     if (e.key === "ArrowRight") {
       if (currentIndex < sessionWords.length - 1) currentIndex++;
-      showCard();
+      card.style.transform = "translateX(-5%)";
+      setTimeout(() => {
+        card.style.transform = "";
+        showCard();
+      }, 150);
     } else if (e.key === "ArrowLeft") {
       if (currentIndex > 0) currentIndex--;
-      showCard();
+      card.style.transform = "translateX(5%)";
+      setTimeout(() => {
+        card.style.transform = "";
+        showCard();
+      }, 150);
     }
   });
 
@@ -363,13 +402,16 @@ document.addEventListener("DOMContentLoaded", () => {
       lang = "el-GR";
     }
     if (!text) return;
-
+    speechSynthesis.cancel();
     const speak = () => {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = lang;
       utterance.rate = 1.3;
       const voices = speechSynthesis.getVoices();
-      const voice = voices.find((v) => v.lang.startsWith(lang.split("-")[0]));
+      const voice =
+        voices.find((v) => v.lang === lang) ||
+        voices.find((v) => v.lang.startsWith(lang.split("-")[0]));
+      console.log("выбран голос:", voice?.name, voice?.lang);
       if (voice) utterance.voice = voice;
       speechSynthesis.speak(utterance);
     };
