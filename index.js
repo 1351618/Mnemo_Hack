@@ -403,45 +403,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   // --------------------------------
 
-  // // озвучка слова 4
-  // function speakWord(elId, word) {
-  //   let text = "";
-  //   let lang = "ru-RU";
-  //   if (elId === "card-ru") {
-  //     text = word.lang0.value;
-  //     lang = "ru-RU";
-  //   }
-  //   if (elId === "card-en") {
-  //     text = word.lang1.value;
-  //     lang = "en-US";
-  //   }
-  //   if (elId === "card-gr") {
-  //     text = word.lang2.value;
-  //     lang = "el-GR";
-  //   }
-  //   if (!text) return;
-  //   speechSynthesis.cancel();
-  //   const speak = () => {
-  //     const utterance = new SpeechSynthesisUtterance(text);
-  //     utterance.lang = lang;
-  //     utterance.rate = 1.3;
-  //     const voices = speechSynthesis.getVoices();
-  //     const voice =
-  //       voices.find((v) => v.lang === lang) ||
-  //       voices.find((v) => v.lang.startsWith(lang.split("-")[0]));
-  //     console.log("выбран голос:", voice?.name, voice?.lang);
-  //     if (voice) utterance.voice = voice;
-  //     speechSynthesis.speak(utterance);
-  //   };
-
-  //   if (speechSynthesis.getVoices().length) {
-  //     speak();
-  //   } else {
-  //     speechSynthesis.onvoiceschanged = speak;
-  //   }
-  //   console.log(speechSynthesis.getVoices());
-  // }
-  // озвучка слова 2
+  // озвучка слова 4
   function speakWord(elId, word) {
     let text = "";
     let lang = "ru-RU";
@@ -461,12 +423,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!text) return;
 
-    const speak = () => {
-      speechSynthesis.cancel();
+    speechSynthesis.cancel();
 
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = lang;
-      utterance.rate = 1.2;
+    setTimeout(() => {
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = lang;
+      u.rate = 1.1;
 
       const voices = speechSynthesis.getVoices();
 
@@ -474,22 +436,61 @@ document.addEventListener("DOMContentLoaded", () => {
         voices.find((v) => v.lang === lang) ||
         voices.find((v) => v.lang && v.lang.startsWith(lang.split("-")[0]));
 
-      if (voice) utterance.voice = voice;
+      if (voice) u.voice = voice;
 
-      speechSynthesis.speak(utterance);
-    };
-
-    // iOS фикс: нужно "разбудить" voices
-    let voices = speechSynthesis.getVoices();
-
-    if (voices.length === 0) {
-      speechSynthesis.onvoiceschanged = () => {
-        setTimeout(speak, 100);
-      };
-    } else {
-      setTimeout(speak, 100);
-    }
+      speechSynthesis.speak(u);
+    }, 150);
   }
+
+  // // озвучка слова 2
+  // function speakWord(elId, word) {
+  //   let text = "";
+  //   let lang = "ru-RU";
+
+  //   if (elId === "card-ru") {
+  //     text = word.lang0.value;
+  //     lang = "ru-RU";
+  //   }
+  //   if (elId === "card-en") {
+  //     text = word.lang1.value;
+  //     lang = "en-US";
+  //   }
+  //   if (elId === "card-gr") {
+  //     text = word.lang2.value;
+  //     lang = "el-GR";
+  //   }
+
+  //   if (!text) return;
+
+  //   const speak = () => {
+  //     speechSynthesis.cancel();
+
+  //     const utterance = new SpeechSynthesisUtterance(text);
+  //     utterance.lang = lang;
+  //     utterance.rate = 1.2;
+
+  //     const voices = speechSynthesis.getVoices();
+
+  //     const voice =
+  //       voices.find((v) => v.lang === lang) ||
+  //       voices.find((v) => v.lang && v.lang.startsWith(lang.split("-")[0]));
+
+  //     if (voice) utterance.voice = voice;
+
+  //     speechSynthesis.speak(utterance);
+  //   };
+
+  //   // iOS фикс: нужно "разбудить" voices
+  //   let voices = speechSynthesis.getVoices();
+
+  //   if (voices.length === 0) {
+  //     speechSynthesis.onvoiceschanged = () => {
+  //       setTimeout(speak, 100);
+  //     };
+  //   } else {
+  //     setTimeout(speak, 100);
+  //   }
+  // }
 
   // -------------------------------
 
