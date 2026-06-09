@@ -247,7 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .classList.toggle("hidden", !word.comment.show);
   }
 
-  // --------------------------------
+  // // --------------------------------
   // //  листание карточек
 
   // document.getElementById("card").addEventListener("touchstart", (e) => {
@@ -275,42 +275,60 @@ document.addEventListener("DOMContentLoaded", () => {
   //   }
   // });
 
+  // --------------------------------
+  //  листание карточек
+
+  function animateCard(dir, callback) {
+    const card = document.getElementById("card");
+
+    card.classList.remove("slide-left", "slide-right");
+    card.classList.add(dir);
+
+    setTimeout(() => {
+      callback();
+      card.classList.remove(dir);
+    }, 200);
+  }
+
+  document.getElementById("card").addEventListener("touchstart", (e) => {
+    touchStartX = e.touches[0].clientX;
+  });
+
   document.getElementById("card").addEventListener("touchend", (e) => {
     const diff = touchStartX - e.changedTouches[0].clientX;
-    const card = document.getElementById("card");
+
     if (diff > 50) {
-      if (currentIndex < sessionWords.length - 1) currentIndex++;
-      card.style.transform = "translateX(-5%)";
-      setTimeout(() => {
-        card.style.transform = "";
-        showCard();
-      }, 150);
+      if (currentIndex < sessionWords.length - 1) {
+        animateCard("slide-left", () => {
+          currentIndex++;
+          showCard();
+        });
+      }
     } else if (diff < -50) {
-      if (currentIndex > 0) currentIndex--;
-      card.style.transform = "translateX(5%)";
-      setTimeout(() => {
-        card.style.transform = "";
-        showCard();
-      }, 150);
+      if (currentIndex > 0) {
+        animateCard("slide-right", () => {
+          currentIndex--;
+          showCard();
+        });
+      }
     }
   });
 
   document.addEventListener("keydown", (e) => {
-    const card = document.getElementById("card");
     if (e.key === "ArrowRight") {
-      if (currentIndex < sessionWords.length - 1) currentIndex++;
-      card.style.transform = "translateX(-5%)";
-      setTimeout(() => {
-        card.style.transform = "";
-        showCard();
-      }, 150);
+      if (currentIndex < sessionWords.length - 1) {
+        animateCard("slide-left", () => {
+          currentIndex++;
+          showCard();
+        });
+      }
     } else if (e.key === "ArrowLeft") {
-      if (currentIndex > 0) currentIndex--;
-      card.style.transform = "translateX(5%)";
-      setTimeout(() => {
-        card.style.transform = "";
-        showCard();
-      }, 150);
+      if (currentIndex > 0) {
+        animateCard("slide-right", () => {
+          currentIndex--;
+          showCard();
+        });
+      }
     }
   });
 
@@ -385,10 +403,49 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   // --------------------------------
 
-  // озвучка слова 4
+  // // озвучка слова 4
+  // function speakWord(elId, word) {
+  //   let text = "";
+  //   let lang = "ru-RU";
+  //   if (elId === "card-ru") {
+  //     text = word.lang0.value;
+  //     lang = "ru-RU";
+  //   }
+  //   if (elId === "card-en") {
+  //     text = word.lang1.value;
+  //     lang = "en-US";
+  //   }
+  //   if (elId === "card-gr") {
+  //     text = word.lang2.value;
+  //     lang = "el-GR";
+  //   }
+  //   if (!text) return;
+  //   speechSynthesis.cancel();
+  //   const speak = () => {
+  //     const utterance = new SpeechSynthesisUtterance(text);
+  //     utterance.lang = lang;
+  //     utterance.rate = 1.3;
+  //     const voices = speechSynthesis.getVoices();
+  //     const voice =
+  //       voices.find((v) => v.lang === lang) ||
+  //       voices.find((v) => v.lang.startsWith(lang.split("-")[0]));
+  //     console.log("выбран голос:", voice?.name, voice?.lang);
+  //     if (voice) utterance.voice = voice;
+  //     speechSynthesis.speak(utterance);
+  //   };
+
+  //   if (speechSynthesis.getVoices().length) {
+  //     speak();
+  //   } else {
+  //     speechSynthesis.onvoiceschanged = speak;
+  //   }
+  //   console.log(speechSynthesis.getVoices());
+  // }
+  // озвучка слова 2
   function speakWord(elId, word) {
     let text = "";
     let lang = "ru-RU";
+
     if (elId === "card-ru") {
       text = word.lang0.value;
       lang = "ru-RU";
@@ -401,29 +458,38 @@ document.addEventListener("DOMContentLoaded", () => {
       text = word.lang2.value;
       lang = "el-GR";
     }
+
     if (!text) return;
-    speechSynthesis.cancel();
+
     const speak = () => {
+      speechSynthesis.cancel();
+
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = lang;
-      utterance.rate = 1.3;
+      utterance.rate = 1.2;
+
       const voices = speechSynthesis.getVoices();
+
       const voice =
         voices.find((v) => v.lang === lang) ||
-        voices.find((v) => v.lang.startsWith(lang.split("-")[0]));
-      console.log("выбран голос:", voice?.name, voice?.lang);
+        voices.find((v) => v.lang && v.lang.startsWith(lang.split("-")[0]));
+
       if (voice) utterance.voice = voice;
+
       speechSynthesis.speak(utterance);
     };
 
-    if (speechSynthesis.getVoices().length) {
-      speak();
+    // iOS фикс: нужно "разбудить" voices
+    let voices = speechSynthesis.getVoices();
+
+    if (voices.length === 0) {
+      speechSynthesis.onvoiceschanged = () => {
+        setTimeout(speak, 100);
+      };
     } else {
-      speechSynthesis.onvoiceschanged = speak;
+      setTimeout(speak, 100);
     }
-    console.log(speechSynthesis.getVoices());
   }
-  // озвучка слова 2
 
   // -------------------------------
 

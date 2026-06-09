@@ -128,7 +128,19 @@ div[id^="block-"] {
 }
 /* --------- */
 #card {
-  transition: transform 0.15s ease;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.slide-left {
+  transform: translateX(-60px);
+  opacity: 0;
+}
+
+.slide-right {
+  transform: translateX(60px);
+  opacity: 0;
 }
 /* --------- */
 
